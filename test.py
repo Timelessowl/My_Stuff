@@ -1,5 +1,8 @@
 import numpy
+from random import randint as rint
 
-train = [[] for i in range(5)]
-print(train)
+for i in range(10):
+    print(rint(1, 1000))
+
+
 print("Fuck You")
