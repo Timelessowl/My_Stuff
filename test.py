@@ -1,8 +1,10 @@
-import numpy
-from random import randint as rint
+import numpy as np
+
+from dice import Roll
+print("test")
 
 for i in range(10):
-    print(rint(1, 1000))
+    print(Roll())
 
 print("test")
 print("Fuck You")

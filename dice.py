@@ -1,57 +1,38 @@
 import numpy as np
+import pandas as pd
 
 def Roll():
-    _result = np.random.randint(1,6)
+    _result = np.random.randint(1, 7)
     if (_result == 1 or _result == 2):
         return "You Loser! You rolled {}".format(_result)
-    elif (_result in range(3, 6) ):
+    elif (_result in range(3, 6)):
         return "Not Bad! You rolled {}".format(_result)
     else:
         return "Lucker! You rolled {}".format(_result)
 
-
-def __main__():
-
+def main():
     rolls = int(input("Please enter the number of rolls You want to make "))
+
     if (rolls == 0):
         print("Then why the fuck You opened the dice programm")
         return
     if (rolls != 1):
+        summ = 0
         maxRoll = 0
         minRoll = 7
 
     for i in range(rolls):
         res = Roll()
         print(res)
-        # if int(res[-1]) > maxRoll:
-        #     maxRoll = res[-1]
-        # elif res[-1] < minRoll:
-        #     minRoll = res[-1]
+        summ += int(res[-1])
+        if int(res[-1]) > maxRoll:
+            maxRoll = int(res[-1])
+        elif int(res[-1]) < minRoll:
+            minRoll = int(res[-1])
 
-    # results = [np.random.randint(1, 6) for i in range(rolls)]
-    # counter = 5
-    # while (results != []):
-    #     print(i, end = ' ')
-    #     print(test[i])
-    #     #print("You rolled ", results[-1])
-    #
-    #     match results[-1]:
-    #         case 1:
-    #             pass
-    #         case 2:
-    #             pass
-    #         case 3:
-    #             continue
-    #         case 4:
-    #             continue
-    #         case 5:
-    #             pass
-    #         case 6:
-    #             pass
-    #     test.pop(-1)
-
-    print("Max You rolled is {}".format(maxRoll), "\n Min You rolled is {}".format(minRoll))
+    print("Max You rolled is {}".format(maxRoll), "\nMin You rolled is {}".format(minRoll))
+    print("Summary You rolled {} points".format(summ))
     print("Fuck You, I'm Closing now")
 
-
-__main__()
+if __name__ == "__main__":
+    main()
