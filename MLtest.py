@@ -1,5 +1,4 @@
 import sys
-import time as tm
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -30,9 +29,17 @@ def main():
 
 
 
-    data['alc'] = (5 * data['Dalc'] + 2 * data['Walc']) / 7
-    # print(data[['Walc', 'Dalc', 'alc']].head(10))
-    DrowPlot(data)
+    # data['alc'] = (5 * data['Dalc'] + 2 * data['Walc']) / 7
+    # print(data['activities'].mode())
+    # DrowPlot(data)
+    # print("Сред оценка хикк", data[data['romantic'] == 'no']['G3'].mean())
+    # print("Сред оценка пар", data[data['romantic'] == 'yes']['G3'].mean())
+    # print("их разность", data[data['romantic'] == 'no']['G3'].mean() - data[data['romantic'] == 'yes']['G3'].mean())
+    # mostcommon = data['activities'].value_counts().idxmax()
+    # print(data[data['activities'] == mostcommon]['absences'].value_counts())
+    # print(mostcommon)
+    print(data[data['school'] == 'MS']['age'].min())
+
 
 
 if __name__ == "__main__":
