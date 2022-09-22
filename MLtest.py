@@ -2,10 +2,10 @@ import sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.datasets import load_boston
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.datasets import load_boston, make_moons
+from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 from sklearn.neighbors import KNeighborsRegressor
-from sklearn.linear_model import  *
+from sklearn.linear_model import *
 from sklearn.metrics import mean_squared_error
 
 
@@ -17,10 +17,10 @@ def Pandas_output_init():
     pd.options.display.max_colwidth = None
 
 
-def DrawPlot(x, y, p):
-    plt.scatter(x[:, p], x[:, 0])
-    plt.xlabel("B")
-    plt.ylabel("Crime rate")
+def DrawPlot(array):
+    plt.plot(range(1, 40, 2), array)
+    plt.ylabel('Negative mean squared error')
+    plt.xlabel('Number of neighbors')
 
     plt.show()
 
@@ -35,20 +35,21 @@ def main():
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2)
 
+    metrics = []
+    for n in range(1, 40, 2):
+        knn = KNeighborsRegressor(n_neighbors=n)
+        scores = cross_val_score(knn, x_train, y_train, cv=5, scoring='neg_mean_squared_error')
+        metrics.append(np.mean(scores))
 
-    knn = KNeighborsRegressor(n_neighbors=5, weights='uniform', p=2)
-    knn.fit(x_train, y_train)
-    prediction = knn.predict(x_test)
-    print(mean_squared_error(y_test, prediction))
-
-    grid_searcher = GridSearchCV(KNeighborsRegressor(),
-                                 param_grid={'n_neighbors': range(1, 40, 2),
-                                             'weights': ['uniform', 'distance'],
-                                             'p': [1, 2, 3]},
-                                 cv=5)
-    grid_searcher.fit(x_train, y_train)
-    best_predict = grid_searcher.predict(x_test)
-    print(mean_squared_error(y_test, best_predict))
+    DrawPlot(metrics)
+    # grid_searcher = GridSearchCV(KNeighborsRegressor(),
+    #                              param_grid={'n_neighbors': range(1, 40, 2),
+    #                                          'weights': ['uniform', 'distance'],
+    #                                          'p': [1, 2, 3]},
+    #                              cv=5)
+    # grid_searcher.fit(x_train, y_train)
+    # best_predict = grid_searcher.predict(x_test)
+    # print(mean_squared_error(y_test, best_predict))
 
 
 
