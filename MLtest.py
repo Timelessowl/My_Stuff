@@ -5,9 +5,8 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import load_boston, make_moons
 from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 from sklearn.neighbors import KNeighborsRegressor
-from sklearn.linear_model import *
-from sklearn.metrics import mean_squared_error
-
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 def Pandas_output_init():
 
@@ -28,29 +27,38 @@ def DrawPlot(array):
 
 def main():
 
-    # Pandas_output_init()
-    # data = pd.read_csv("math_students.csv", delimiter= ',')
     data = load_boston()
     x, y = data['data'], data['target']
+    print(x.shape)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2)
-
-    metrics = []
-    for n in range(1, 40, 2):
-        knn = KNeighborsRegressor(n_neighbors=n)
-        scores = cross_val_score(knn, x_train, y_train, cv=5, scoring='neg_mean_squared_error')
-        metrics.append(np.mean(scores))
-
-    DrawPlot(metrics)
-    # grid_searcher = GridSearchCV(KNeighborsRegressor(),
-    #                              param_grid={'n_neighbors': range(1, 40, 2),
-    #                                          'weights': ['uniform', 'distance'],
-    #                                          'p': [1, 2, 3]},
-    #                              cv=5)
+    knn = KNeighborsRegressor(n_neighbors=5, weights='uniform', p=2)
+    linear = LinearRegression()
+    ridge = Ridge()
+    lasso = Lasso()
+    knn.fit(x, y)
+    pred = knn.predict(x)
+    print(mean_squared_error(y, pred))
+    # print(mean_absolute_error(y, pred))
+    grid_searcher = GridSearchCV(KNeighborsRegressor(),
+                                 param_grid={'n_neighbors': range(1, 40, 2),
+                                             'weights': ['uniform', 'distance'],
+                                             'p': [1, 2, 3]},
+                                 cv=5)
     # grid_searcher.fit(x_train, y_train)
-    # best_predict = grid_searcher.predict(x_test)
-    # print(mean_squared_error(y_test, best_predict))
-
+    # print(grid_searcher.best_params_)
+    # grid_searcher.fit(x, y)
+    # print(grid_searcher.best_params_)
+    # best_pred = grid_searcher.predict(x)
+    # print(mean_squared_error(y, best_pred))
+    linear.fit(x, y)
+    linPred = linear.predict(x)
+    print(mean_squared_error(y, linPred))
+    ridge.fit(x, y)
+    lasso.fit(x, y)
+    rPred, lPred = ridge.predict(x), lasso.predict(x)
+    print(mean_squared_error(y, rPred))
+    print(mean_squared_error(y, lPred))
 
 
 
